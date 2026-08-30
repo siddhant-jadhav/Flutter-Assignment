@@ -1,56 +1,40 @@
-// Simple Library System
+Future<String?> fetchUserData(int id) async {
+  print("Fetching data from server...");
+  await Future.delayed(Duration(seconds: 2));
 
-// Parent class
-class Book {
-  String title;
-  String author;
-
-  Book(this.title, this.author);
-
-  void showBook() {
-    print("Title: $title");
-    print("Author: $author");
+  if (id == 1) {
+    return "User: John Doe, Email: john@example.com";
+  } else if (id == 2) {
+    return null;
+  } else {
+    throw Exception("Server connection failed!");
   }
 }
 
-// Child class
-class EBook extends Book {
-  double size;
+Future<void> displayUserData(int id) async {
+  try {
+    print("Starting request for ID: $id");
+    String? userData = await fetchUserData(id);
 
-  EBook(String title, String author, this.size) : super(title, author);
-
-  void showEBook() {
-    showBook();
-    print("Size: $size MB");
+    if (userData == null) {
+      print("Result: No data found for this ID!");
+    } else {
+      print("Result: $userData");
+    }
+  } catch (error) {
+    print("Error: $error");
+  } finally {
+    print("Done checking for ID: $id\n");
   }
 }
 
-// Function to display all books
-void showAllBooks(List<Book> books) {
-  for (var book in books) {
-    book.showBook();
-  }
-}
+Future<void> main() async {
+  print("Fetching user 1...");
+  await displayUserData(1);
 
-void main() {
-  // Variables
-  String libraryName = "My Simple Library";
+  print("Fetching user 2...");
+  await displayUserData(2);
 
-  print(libraryName);
-
-  // Creating objects
-  Book book1 = Book("Harry Potter", "J.K. Rowling");
-  Book book2 = Book("The Alchemist", "Paulo Coelho");
-
-  EBook book3 = EBook("Dart Programming", "John Smith", 5.5);
-
-  // List of books
-  List<Book> books = [book1, book2, book3];
-
-  // Loop
-  showAllBooks(books);
-
-  // Function call
-  print("E-Book Details:");
-  book3.showEBook();
+  print("Fetching user 3...");
+  await displayUserData(3);
 }
