@@ -1,56 +1,37 @@
-// Simple Library System
-
-// Parent class
-class Book {
-  String title;
-  String author;
-
-  Book(this.title, this.author);
-
-  void showBook() {
-    print("Title: $title");
-    print("Author: $author");
-  }
-}
-
-// Child class
-class EBook extends Book {
-  double size;
-
-  EBook(String title, String author, this.size) : super(title, author);
-
-  void showEBook() {
-    showBook();
-    print("Size: $size MB");
-  }
-}
-
-// Function to display all books
-void showAllBooks(List<Book> books) {
-  for (var book in books) {
-    book.showBook();
-  }
-}
+import 'package:flutter/material.dart';
+import 'home_page.dart';
 
 void main() {
-  // Variables
-  String libraryName = "My Simple Library";
+  runApp(const MyApp());
+}
 
-  print(libraryName);
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  // Creating objects
-  Book book1 = Book("Harry Potter", "J.K. Rowling");
-  Book book2 = Book("The Alchemist", "Paulo Coelho");
-
-  EBook book3 = EBook("Dart Programming", "John Smith", 5.5);
-
-  // List of books
-  List<Book> books = [book1, book2, book3];
-
-  // Loop
-  showAllBooks(books);
-
-  // Function call
-  print("E-Book Details:");
-  book3.showEBook();
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Profile Card Screen',
+      // Custom Theme Colors
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF4F46E5), // Indigo
+          primary: const Color(0xFF4F46E5),
+          secondary: const Color(0xFF06B6D4), // Cyan
+          tertiary: const Color(0xFFF59E0B),  // Amber
+          surface: Colors.white,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF1F5F9), // Light slate
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF4F46E5),
+          foregroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
+        ),
+      ),
+      home: const HomePage(),
+    );
+  }
 }
