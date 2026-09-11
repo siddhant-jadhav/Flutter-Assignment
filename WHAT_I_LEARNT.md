@@ -1,0 +1,18 @@
+# What I Learnt: Building a Flutter Todo List with StatefulWidget and setState
+
+Developing this fully functional Todo List application in Flutter provided essential hands-on insights into reactive UI architecture, stateful widget lifecycles, and local state synchronization. The objective was to implement dynamic Add, Delete, and Mark-Complete operations while maintaining clean architectural separation and delivering responsive user feedback.
+
+### 1. Understanding StatefulWidget and the Widget-State Lifecycle
+In Flutter, widgets are immutable blueprints that describe what the interface should look like given the current configuration. A `StatelessWidget` cannot mutate over time; once rendered, any dynamic change requires rebuilding the entire component hierarchy from scratch. By contrasting this with `StatefulWidget`, I learned how Flutter separates immutable widget configurations from persistent state objects (`State<T>`). When `TodoListScreen` is mounted, Flutter invokes `createState()`, producing a persistent `_TodoListScreenState` instance. This state object remains alive in memory even as widget trees reconfigure, preserving the collection of todo items across hot reloads and frame repaints.
+
+### 2. The Internal Mechanics of setState()
+The most critical realization was mastering `setState()`. Calling `setState()` does not instantaneously repaint the screen; instead, it informs the Flutter framework that the internal state has changed, marking the corresponding `Element` as "dirty." Flutter schedules a build phase during the next vsync signal, triggering the `build()` method to compute the updated widget sub-tree. Through this project, I learned that only mutations directly impacting UI rendering should be wrapped inside `setState()`. Performing asynchronous work or resource-intensive tasks directly within `setState()` degrades frame rates and violates Flutter rendering best practices.
+
+### 3. Dynamic Operations: Add, Delete, and Mark-Complete
+Implementing core operations revealed key nuances of reactive collections:
+- **Add Operation**: I learned to capture user input through a `TextEditingController`, perform rigorous input sanitization (trimming and empty validation), and create immutable model instances (`TodoItem`). Inserting items at index zero within `setState()` immediately updates both the list view and the task metrics banner.
+- **Delete Operation & State Reversal**: Beyond simply invoking `removeAt()`, I explored user experience design by pairing `Dismissible` swipe gestures with an undo mechanism. By temporarily caching the removed item, a `SnackBar` action can restore the task via `insert()` inside another `setState()` call, illustrating non-destructive local state mutations.
+- **Mark-Complete Operation**: Toggling an item’s boolean state causes reactive visual updates—including animated checkmarks, strikethrough typography, card elevation changes, and dynamic progress bar recalculations. This demonstrated how a single atomic state change smoothly propagates across multiple dependent widgets.
+
+### 4. Architectural & Performance Takeaways
+Utilizing `ListView.builder` reinforced the importance of memory efficiency, lazily instantiating only visible list items rather than loading massive collections into RAM simultaneously. In conclusion, this assignment solidified my understanding of declarative UI programming: the UI is a direct function of state (`UI = f(state)`). Mastering `StatefulWidget` and `setState()` established the foundational mental model required before transitioning to global state management solutions like Provider, Riverpod, or Bloc.
