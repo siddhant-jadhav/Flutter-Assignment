@@ -70,7 +70,7 @@ class TodoListApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
         scaffoldBackgroundColor: const Color(0xFFF8F9FE),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 1.5,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
